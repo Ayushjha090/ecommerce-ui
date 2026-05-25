@@ -1,7 +1,12 @@
 import { createBrowserRouter, type RouteObject } from "react-router";
+
+// Admin pages
+import Login from "./pages/admin/auth/Login";
+
 import Home from "./components/Home";
 import ThemeDemo from "./ThemeDemo";
-import RouteErrorPage from "./pages/errors/RouteErrorPage";
+
+// Error pages
 import NotFoundPage from "./pages/errors/NotFoundPage";
 import InternalServerErrorPage from "./pages/errors/InternalServerErrorPage";
 import UnauthorizedPage from "./pages/errors/UnauthorizedPage";
@@ -11,20 +16,33 @@ import WorkInProgressPage from "./pages/errors/WorkInProgressPage";
 const routes: RouteObject[] = [
   {
     path: "/",
-    Component: Home,
-    errorElement: <RouteErrorPage />,
+    element: <Home />,
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        path: "auth",
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+          },
+        ],
+      },
+    ],
   },
 ];
 
 // Conditionally add routes
 if (import.meta.env.DEV) {
   routes.push(
-    { path: "/theme-demo", Component: ThemeDemo },
+    { path: "/theme-demo", element: <ThemeDemo /> },
     // Add these temporary dev routes!
-    { path: "/test-500", Component: InternalServerErrorPage },
-    { path: "/test-401", Component: UnauthorizedPage },
-    { path: "/test-maintenance", Component: MaintenancePage },
-    { path: "/test-wip", Component: WorkInProgressPage },
+    { path: "/test-500", element: <InternalServerErrorPage /> },
+    { path: "/test-401", element: <UnauthorizedPage /> },
+    { path: "/test-maintenance", element: <MaintenancePage /> },
+    { path: "/test-wip", element: <WorkInProgressPage /> },
   );
 }
 
