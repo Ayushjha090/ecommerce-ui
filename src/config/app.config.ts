@@ -1,9 +1,12 @@
 import type { AppConfig } from '../types/config.types';
 
+import { env } from "./env";
+
 export const appConfig: AppConfig = {
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
+  apiUrl: env.API_URL,
   defaultPageSize: 20,
-  apiTimeoutMs: 10000,
+  apiTimeoutMs: env.API_TIMEOUT_MS,
+  reactQueryStaleTimeMs: env.REACT_QUERY_STALE_TIME_MS,
 };
 
 export default appConfig;

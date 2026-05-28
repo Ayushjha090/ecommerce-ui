@@ -2,19 +2,22 @@ import { useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeClosed } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
 
-import { themeConfig } from "../../../config/index";
-import { Button } from "../../ui/Button";
-import { Tooltip } from "../../ui/Tooltip";
-import { Field } from "../../ui/form/Field";
+import { themeConfig } from "../../../../config";
+import { Button } from "../../../../components/ui/Button";
+import { Tooltip } from "../../../../components/ui/Tooltip";
+import { Field } from "../../../../components/ui/form/Field";
 
 import {
   adminLoginSchema,
   type LoginFormValues,
-} from "../../../schema/admin/auth/login.schema";
+} from "../../schema/admin/login.schema";
+import { useAdminAuth } from "../../hooks/useAdminAuth";
 
 const Login: FC = () => {
   const { logoUrl, templateName } = themeConfig;
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const {
@@ -27,8 +30,14 @@ const Login: FC = () => {
     reValidateMode: "onChange",
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    console.log(data);
+  const { login } = useAdminAuth();
+  const { error, isError, isLoading, login: loginFunc } = login;
+  const onSubmit = (data: LoginFormValues) => {
+    loginFunc(data, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
 
   return (
@@ -87,12 +96,18 @@ const Login: FC = () => {
               type="submit"
               fullWidth
               size="lg"
-              isLoading={isSubmitting}
+              isLoading={isSubmitting || isLoading}
               className="rounded-full text-xl cursor-pointer"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoading}
             >
-              {isSubmitting ? "Logging in…" : "Login"}
+              {isSubmitting || isLoading ? "Logging in…" : "Login"}
             </Button>
+
+            {isError ? (
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {error?.message || "Unable to login. Please try again."}
+              </p>
+            ) : null}
           </form>
         </div>
       </div>

@@ -8,4 +8,5 @@ export interface AppConfig {
   apiUrl: string;
   defaultPageSize: number;
   apiTimeoutMs: number;
+  reactQueryStaleTimeMs: number;
 }
