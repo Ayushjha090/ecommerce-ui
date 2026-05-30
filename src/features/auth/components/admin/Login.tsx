@@ -2,9 +2,9 @@ import { useState, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeClosed } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 
-import { themeConfig } from "../../../../config";
+import { paths, themeConfig } from "../../../../config";
 import { Button } from "../../../../components/ui/Button";
 import { Tooltip } from "../../../../components/ui/Tooltip";
 import { Field } from "../../../../components/ui/form/Field";
@@ -14,10 +14,14 @@ import {
   type LoginFormValues,
 } from "../../schema/admin/login.schema";
 import { useAdminAuth } from "../../hooks/useAdminAuth";
+import { setAccessToken } from "@/lib/storage/tokenStorage";
+import { queryClient } from "@/lib/react-query/react-query";
+import { adminAuthKeys } from "../../api/adminAuth.keys";
 
 const Login: FC = () => {
   const { logoUrl, templateName } = themeConfig;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const {
@@ -30,12 +34,21 @@ const Login: FC = () => {
     reValidateMode: "onChange",
   });
 
+  const redirectTo =
+    searchParams.get("redirectTo") || paths.admin.dashboard.getHref();
+
   const { login } = useAdminAuth();
   const { error, isError, isLoading, login: loginFunc } = login;
   const onSubmit = (data: LoginFormValues) => {
     loginFunc(data, {
-      onSuccess: () => {
-        navigate("/");
+      onSuccess: (loginResult) => {
+        setAccessToken("admin", loginResult.token);
+
+        queryClient.setQueryData(adminAuthKeys.me(), loginResult.user);
+
+        navigate(redirectTo, {
+          replace: true,
+        });
       },
     });
   };

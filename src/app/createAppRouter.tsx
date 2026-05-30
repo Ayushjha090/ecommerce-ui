@@ -3,6 +3,11 @@ import { type ComponentType } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router";
 
 import { paths } from "@/config";
+import {
+  adminIndexLoader,
+  adminLoginLoader,
+  requiresAdminLoader,
+} from "@/features/auth/loaders";
 
 type ClientLoader = NonNullable<RouteObject["loader"]>;
 type ClientAction = NonNullable<RouteObject["action"]>;
@@ -33,16 +38,38 @@ export const createAppRouter = (queryClient: QueryClient) => {
       path: paths.admin.root.path,
       children: [
         {
+          index: true,
+          loader: adminIndexLoader(queryClient),
+        },
+        {
           path: paths.admin.auth.login.path,
+          loader: adminLoginLoader(queryClient),
           lazy: () =>
             import("../pages/admin/auth/Login").then(convert(queryClient)),
         },
         {
-          path: paths.admin.dashboard.path,
-          lazy: () =>
-            import("../pages/admin/dashboard").then(convert(queryClient)),
+          loader: requiresAdminLoader(queryClient),
+          children: [
+            {
+              path: paths.admin.dashboard.path,
+              lazy: () =>
+                import("../pages/admin/dashboard").then(convert(queryClient)),
+            },
+          ],
         },
       ],
+    },
+    {
+      path: paths.errors.unauthenticated.path,
+      lazy: () =>
+        import("../pages/errors/UnauthenticatedPage").then(
+          convert(queryClient),
+        ),
+    },
+    {
+      path: paths.errors.unauthorized.path,
+      lazy: () =>
+        import("../pages/errors/UnauthorizedPage").then(convert(queryClient)),
     },
   ];
 
@@ -56,6 +83,13 @@ export const createAppRouter = (queryClient: QueryClient) => {
         path: paths.dev.internalServerError.path,
         lazy: () =>
           import("../pages/errors/InternalServerErrorPage").then(
+            convert(queryClient),
+          ),
+      },
+      {
+        path: paths.dev.unauthenticated.path,
+        lazy: () =>
+          import("../pages/errors/UnauthenticatedPage").then(
             convert(queryClient),
           ),
       },
@@ -81,7 +115,8 @@ export const createAppRouter = (queryClient: QueryClient) => {
 
   routes.push({
     path: paths.notFound.path,
-    lazy: () => import("../pages/errors/NotFoundPage").then(convert(queryClient)),
+    lazy: () =>
+      import("../pages/errors/NotFoundPage").then(convert(queryClient)),
   });
 
   return createBrowserRouter(routes);

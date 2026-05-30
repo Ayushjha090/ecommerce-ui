@@ -33,9 +33,13 @@ export const paths = {
       path: "/test-500",
       getHref: () => "/test-500",
     },
-    unauthorized: {
+    unauthenticated: {
       path: "/test-401",
       getHref: () => "/test-401",
+    },
+    unauthorized: {
+      path: "/test-403",
+      getHref: () => "/test-403",
     },
     maintenance: {
       path: "/test-maintenance",
@@ -44,6 +48,19 @@ export const paths = {
     workInProgress: {
       path: "/test-wip",
       getHref: () => "/test-wip",
+    },
+  },
+
+  errors: {
+    unauthenticated: {
+      path: "/unauthenticated",
+      getHref: (from?: string | null) =>
+        `/unauthenticated${from ? `?from=${encodeURIComponent(from)}` : ""}`,
+    },
+    unauthorized: {
+      path: "/unauthorized",
+      getHref: (from?: string | null) =>
+        `/unauthorized${from ? `?from=${encodeURIComponent(from)}` : ""}`,
     },
   },
 

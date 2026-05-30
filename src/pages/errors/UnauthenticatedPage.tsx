@@ -1,21 +1,21 @@
-import { Lock, LogIn, Home } from "lucide-react";
+import { Home, LogIn, ShieldAlert } from "lucide-react";
 import { useSearchParams } from "react-router";
 
 import { paths } from "@/config";
 import ErrorPage from "../../components/error/ErrorPage";
 
-export default function UnauthorizedPage() {
+export default function UnauthenticatedPage() {
   const [searchParams] = useSearchParams();
   const from = searchParams.get("from");
   const isAdminRoute = from?.startsWith(paths.admin.root.getHref()) ?? false;
 
   return (
     <ErrorPage
-      code="403"
-      title="Access Forbidden"
-      message="You are signed in, but this account does not have permission to access this page."
-      intent="warning"
-      icon={Lock}
+      code="401"
+      title="Authentication Required"
+      message="Please log in before continuing to this page."
+      intent="info"
+      icon={ShieldAlert}
       primaryAction={{
         label: isAdminRoute ? "Admin Login" : "Log In",
         to: isAdminRoute ? paths.admin.auth.login.getHref(from) : "/login",
