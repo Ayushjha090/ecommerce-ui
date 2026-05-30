@@ -1,6 +1,6 @@
 import type { ThemeConfig } from '../types/config.types';
 
-import { env } from "./env";
+import { env } from "./env.config";
 
 export const themeConfig: ThemeConfig = {
   templateName: env.TEMPLATE_NAME,

@@ -1,6 +1,6 @@
 import type { AppConfig } from '../types/config.types';
 
-import { env } from "./env";
+import { env } from "./env.config";
 
 export const appConfig: AppConfig = {
   apiUrl: env.API_URL,
