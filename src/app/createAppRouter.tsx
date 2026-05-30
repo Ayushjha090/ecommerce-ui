@@ -49,6 +49,7 @@ export const createAppRouter = (queryClient: QueryClient) => {
         },
         {
           loader: requiresAdminLoader(queryClient),
+          lazy: () => import("@/layouts/admin").then(convert(queryClient)),
           children: [
             {
               path: paths.admin.dashboard.path,
