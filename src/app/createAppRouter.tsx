@@ -77,6 +77,11 @@ export const createAppRouter = (queryClient: QueryClient) => {
   if (import.meta.env.DEV) {
     routes.push(
       {
+        path: paths.dev.visualizer.path,
+        lazy: () =>
+          import("../pages/dev/visualizer").then(convert(queryClient)),
+      },
+      {
         path: paths.dev.themeDemo.path,
         lazy: () => import("../ThemeDemo").then(convert(queryClient)),
       },

@@ -25,6 +25,10 @@ export const paths = {
   },
 
   dev: {
+    visualizer: {
+      path: "/__visualizer",
+      getHref: () => "/__visualizer",
+    },
     themeDemo: {
       path: "/theme-demo",
       getHref: () => "/theme-demo",
