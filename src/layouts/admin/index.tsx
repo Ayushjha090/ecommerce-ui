@@ -8,8 +8,8 @@ export default function AdminLayout() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-surface-200 dark:bg-surface-900 text-surface-900 dark:text-surface-100">
-      <div className="flex min-h-screen">
+    <div className="min-h-dvh bg-surface-200 text-surface-900 dark:bg-surface-900 dark:text-surface-100">
+      <div className="flex min-h-dvh">
         {isMobileSidebarOpen && (
           <button
             type="button"
@@ -25,9 +25,13 @@ export default function AdminLayout() {
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <AdminTopbar onOpenSidebar={() => setIsMobileSidebarOpen(true)} />
+          <div className="sticky top-0 z-20 bg-transparent px-4 pt-4 pb-3 lg:px-6 lg:pt-5">
+            <div className="mx-auto w-full max-w-7xl">
+              <AdminTopbar onOpenSidebar={() => setIsMobileSidebarOpen(true)} />
+            </div>
+          </div>
 
-          <main className="flex-1 px-6 py-6">
+          <main className="flex-1 px-4 lg:px-6">
             <div className="mx-auto w-full max-w-7xl">
               <Outlet />
             </div>

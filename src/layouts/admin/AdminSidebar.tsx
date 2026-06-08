@@ -60,7 +60,7 @@ export default function AdminSidebar({
   return (
     <aside
       className={[
-        "fixed left-0 top-0 z-40 m-0 flex h-dvh min-h-0 w-64 shrink-0 transform-gpu flex-col rounded-r-md bg-surface-50 shadow-2xl transition-[transform,opacity,width] duration-300 ease-out dark:bg-surface-800 lg:sticky lg:top-5 lg:z-auto lg:m-5 lg:h-[calc(100dvh-2.5rem)] lg:min-h-80 lg:rounded-md lg:opacity-100",
+        "fixed left-0 top-0 z-40 m-0 flex h-dvh min-h-0 w-64 shrink-0 transform-gpu flex-col rounded-r-md bg-surface-50 shadow-soft transition-[transform,opacity,width] duration-300 ease-out dark:bg-surface-800 lg:sticky lg:top-5 lg:z-auto lg:m-5 lg:h-[calc(100dvh-2.5rem)] lg:min-h-80 lg:rounded-md lg:opacity-100",
         isMobileOpen
           ? "translate-x-0 opacity-100"
           : "-translate-x-full opacity-0 lg:translate-x-0",

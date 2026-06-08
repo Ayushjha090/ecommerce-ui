@@ -86,7 +86,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
   ];
 
   return (
-    <header className="sticky top-4 z-20 mx-4 flex h-16 items-center justify-between rounded-md bg-surface-50 px-4 shadow-2xl dark:bg-surface-800 lg:top-5 lg:mx-0 lg:px-6">
+    <header className="flex h-16 items-center justify-between rounded-md bg-surface-50/90 px-4 shadow-soft backdrop-blur-md backdrop-saturate-150 dark:bg-surface-800/85 lg:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           type="button"
@@ -162,7 +162,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
         </button>
 
         {isProfileOpen && (
-          <div className="fixed left-1/2 top-20 w-[calc(100vw-2rem)] max-w-88 -translate-x-1/2 overflow-hidden rounded-lg bg-surface-50 p-5 shadow-2xl dark:bg-surface-900 sm:absolute sm:right-0 sm:left-auto sm:top-12 sm:w-88 sm:max-w-none sm:translate-x-0">
+          <div className="fixed left-1/2 top-20 w-[calc(100vw-2rem)] max-w-88 -translate-x-1/2 overflow-hidden rounded-lg bg-surface-50 p-5 shadow-soft dark:bg-surface-900 sm:absolute sm:right-0 sm:left-auto sm:top-12 sm:w-88 sm:max-w-none sm:translate-x-0">
             <h2 className="text-lg font-semibold text-surface-900 dark:text-surface-50">
               User Profile
             </h2>

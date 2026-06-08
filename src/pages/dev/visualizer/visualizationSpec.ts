@@ -1,22 +1,28 @@
-export type VisualizationKind =
-  | "comparison"
-  | "checkout"
-  | "dashboard"
-  | "campaign"
-  | "landing";
-
-export type ProductCard = {
-  name: string;
-  price: string;
-  metric: string;
-  badge: string;
-  features: string[];
-};
+export type VisualizationKind = "admin-products";
 
 export type VisualizationStat = {
   label: string;
   value: string;
+  detail: string;
   tone: "brand" | "success" | "warning" | "accent";
+};
+
+export type ProductStatus = "Active" | "Draft" | "Low stock" | "Archived";
+
+export type AdminProduct = {
+  id: string;
+  name: string;
+  category: string;
+  sku: string;
+  price: string;
+  stock: number;
+  status: ProductStatus;
+  updatedAt: string;
+};
+
+export type ProductFilter = {
+  label: string;
+  value: string;
 };
 
 export type VisualizationAction = {
@@ -29,117 +35,116 @@ export type VisualizationSpec = {
   title: string;
   subtitle: string;
   intent: string;
-  products: ProductCard[];
   stats: VisualizationStat[];
   actions: VisualizationAction[];
-  navItems?: string[];
-  heroSlides?: Array<{
-    eyebrow: string;
-    title: string;
-    description: string;
-    offer: string;
-  }>;
-  filters?: Array<{
-    label: string;
-    options: string[];
-  }>;
+  filters: ProductFilter[];
+  products: AdminProduct[];
 };
 
 export const currentVisualizationSpec: VisualizationSpec = {
-  kind: "landing",
-  title: "Customer Marketplace Landing Page",
+  kind: "admin-products",
+  title: "Products Management",
   subtitle:
-    "A customer-facing ecommerce landing page with a marketplace topbar, promotional carousel, filters, and product discovery grid.",
-  intent: "Help shoppers search, browse deals, filter quickly, and move into product discovery without friction.",
+    "A professional admin surface for listing products, adding new inventory, editing catalog details, and importing product data from CSV or Excel.",
+  intent:
+    "Give admins a fast, scannable workspace to manage the ecommerce catalog with clear inventory status and high-confidence actions.",
   stats: [
-    { label: "Live deals", value: "128", tone: "accent" },
-    { label: "Fast delivery", value: "24h", tone: "brand" },
-    { label: "Top rated", value: "4.7+", tone: "success" },
+    {
+      label: "Total products",
+      value: "1,284",
+      detail: "Across 18 categories",
+      tone: "brand",
+    },
+    {
+      label: "Active listings",
+      value: "1,108",
+      detail: "86% of catalog live",
+      tone: "success",
+    },
+    {
+      label: "Low stock",
+      value: "42",
+      detail: "Needs replenishment",
+      tone: "warning",
+    },
+    {
+      label: "Draft updates",
+      value: "17",
+      detail: "Waiting for review",
+      tone: "accent",
+    },
   ],
   actions: [
-    { label: "Shop deals", variant: "primary" },
-    { label: "Explore categories", variant: "outline" },
-  ],
-  navItems: [
-    "All",
-    "Mobiles",
-    "Fashion",
-    "Electronics",
-    "Home",
-    "Appliances",
-    "Beauty",
-  ],
-  heroSlides: [
-    {
-      eyebrow: "Festival Mega Sale",
-      title: "Big savings across phones, fashion, and home essentials",
-      description:
-        "Discover curated deals, bank offers, and express delivery picks in one shopper-friendly storefront.",
-      offer: "Up to 70% off",
-    },
-    {
-      eyebrow: "Prime Picks",
-      title: "Upgrade your everyday tech setup",
-      description:
-        "Shop headphones, wearables, accessories, and productivity gear with verified ratings.",
-      offer: "From $29",
-    },
-    {
-      eyebrow: "Fresh Arrivals",
-      title: "New season styles for every cart",
-      description:
-        "Browse trending apparel, footwear, and grooming essentials with quick filters.",
-      offer: "New drops daily",
-    },
+    { label: "Add product", variant: "primary" },
+    { label: "Import CSV / Excel", variant: "outline" },
   ],
   filters: [
-    { label: "Delivery", options: ["Today", "Tomorrow", "Free shipping"] },
-    { label: "Price", options: ["Under $50", "$50-$150", "$150+"] },
-    { label: "Rating", options: ["4 stars & up", "Best sellers", "New arrivals"] },
-    { label: "Category", options: ["Electronics", "Fashion", "Home"] },
+    { label: "All products", value: "1,284" },
+    { label: "Active", value: "1,108" },
+    { label: "Draft", value: "93" },
+    { label: "Low stock", value: "42" },
+    { label: "Archived", value: "41" },
   ],
   products: [
     {
+      id: "PRD-1048",
       name: "Galaxy M Power 5G",
-      price: "$219",
-      metric: "4.6",
-      badge: "Deal",
-      features: ["6000mAh battery", "AMOLED display", "Exchange available"],
+      category: "Mobiles",
+      sku: "MOB-GMP-128-BLK",
+      price: "$219.00",
+      stock: 128,
+      status: "Active",
+      updatedAt: "Today, 10:42 AM",
     },
     {
-      name: "UrbanRun Sneakers",
-      price: "$64",
-      metric: "4.5",
-      badge: "Trending",
-      features: ["Lightweight sole", "3 colors", "Free return"],
-    },
-    {
+      id: "PRD-0982",
       name: "NoiseLite Headphones",
-      price: "$89",
-      metric: "4.8",
-      badge: "Top rated",
-      features: ["ANC mode", "45h playback", "Fast charge"],
+      category: "Electronics",
+      sku: "AUD-NLH-ANC-GRY",
+      price: "$89.00",
+      stock: 18,
+      status: "Low stock",
+      updatedAt: "Today, 9:15 AM",
     },
     {
+      id: "PRD-1120",
+      name: "UrbanRun Sneakers",
+      category: "Fashion",
+      sku: "FSH-URS-42-WHT",
+      price: "$64.00",
+      stock: 246,
+      status: "Active",
+      updatedAt: "Yesterday, 6:20 PM",
+    },
+    {
+      id: "PRD-1177",
       name: "SmartChef Air Fryer",
-      price: "$129",
-      metric: "4.7",
-      badge: "Home",
-      features: ["6 presets", "Family size", "2-year warranty"],
+      category: "Home Appliances",
+      sku: "HOM-SAF-6L-BLK",
+      price: "$129.00",
+      stock: 7,
+      status: "Low stock",
+      updatedAt: "Yesterday, 4:05 PM",
     },
     {
+      id: "PRD-1214",
+      name: "GlowCare Starter Kit",
+      category: "Beauty",
+      sku: "BTY-GCK-SET-01",
+      price: "$34.00",
+      stock: 0,
+      status: "Draft",
+      updatedAt: "Jun 7, 2:18 PM",
+    },
+    {
+      id: "PRD-0871",
       name: "Everyday Backpack",
-      price: "$42",
-      metric: "4.4",
-      badge: "Choice",
-      features: ["Laptop sleeve", "Water resistant", "Quick access pocket"],
-    },
-    {
-      name: "GlowCare Kit",
-      price: "$34",
-      metric: "4.6",
-      badge: "Beauty",
-      features: ["Dermat tested", "Gift pack", "Subscribe & save"],
+      category: "Accessories",
+      sku: "ACC-EDB-24L-NVY",
+      price: "$42.00",
+      stock: 312,
+      status: "Active",
+      updatedAt: "Jun 6, 11:30 AM",
     },
   ],
 };
