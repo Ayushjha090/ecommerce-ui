@@ -3,6 +3,7 @@ import { type ComponentType } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router";
 
 import { paths } from "@/config";
+import { categoriesLoader } from "@/features/categories/loaders/categories.loader";
 import {
   adminIndexLoader,
   adminLoginLoader,
@@ -55,6 +56,12 @@ export const createAppRouter = (queryClient: QueryClient) => {
               path: paths.admin.dashboard.path,
               lazy: () =>
                 import("../pages/admin/dashboard").then(convert(queryClient)),
+            },
+            {
+              path: paths.admin.categories.path,
+              loader: categoriesLoader(queryClient),
+              lazy: () =>
+                import("../pages/admin/categories").then(convert(queryClient)),
             },
           ],
         },

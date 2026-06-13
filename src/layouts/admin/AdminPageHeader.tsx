@@ -2,6 +2,8 @@ import { ArrowLeft, ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";
 import { useNavigate } from "react-router";
 
+import { Button } from "@/components/ui/Button";
+
 type AdminBreadcrumbItem = {
   label: string;
 };
@@ -27,15 +29,17 @@ export default function AdminPageHeader({
     <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3">
         {showBackButton && (
-          <button
+          <Button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-50 text-surface-600 shadow-soft transition-colors hover:bg-surface-100 hover:text-surface-950 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700 dark:hover:text-surface-50"
+            variant="secondary"
+            size="icon"
+            className="shrink-0 bg-surface-50 text-surface-600 shadow-soft hover:bg-surface-100 hover:text-surface-950 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-200 dark:hover:text-surface-900"
             aria-label="Go back"
             title="Go back"
           >
             <ArrowLeft className="h-5 w-5" />
-          </button>
+          </Button>
         )}
 
         <div className="min-w-0">

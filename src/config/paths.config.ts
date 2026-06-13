@@ -22,6 +22,10 @@ export const paths = {
       path: "dashboard",
       getHref: () => "/admin/dashboard",
     },
+    categories: {
+      path: "categories",
+      getHref: () => "/admin/categories",
+    },
   },
 
   dev: {

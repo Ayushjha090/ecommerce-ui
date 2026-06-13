@@ -3,6 +3,7 @@ import {
   Package,
   ShoppingCart,
   Users,
+  Tags,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,6 +22,16 @@ export const adminNavigationItems: AdminNavigationItem[] = [
     icon: LayoutDashboard,
   },
   {
+    label: "Users",
+    to: "/admin/users",
+    icon: Users,
+  },
+  {
+    label: "Categories",
+    to: "/admin/categories",
+    icon: Tags,
+  },
+  {
     label: "Products",
     to: "/admin/products",
     icon: Package,
@@ -29,10 +40,5 @@ export const adminNavigationItems: AdminNavigationItem[] = [
     label: "Orders",
     to: "/admin/orders",
     icon: ShoppingCart,
-  },
-  {
-    label: "Users",
-    to: "/admin/users",
-    icon: Users,
   },
 ];

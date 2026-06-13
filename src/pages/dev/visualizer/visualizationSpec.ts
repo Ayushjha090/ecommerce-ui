@@ -1,150 +1,145 @@
-export type VisualizationKind = "admin-products";
-
-export type VisualizationStat = {
-  label: string;
-  value: string;
-  detail: string;
-  tone: "brand" | "success" | "warning" | "accent";
-};
-
-export type ProductStatus = "Active" | "Draft" | "Low stock" | "Archived";
-
-export type AdminProduct = {
-  id: string;
+export type Category = {
+  id: number;
   name: string;
-  category: string;
-  sku: string;
-  price: string;
-  stock: number;
-  status: ProductStatus;
+  description?: string;
+  image?: string;
+  parentId?: number | null;
+  parent?: {
+    id: number;
+    name: string;
+  } | null;
+  productsCount: number;
+  createdAt: string;
   updatedAt: string;
 };
 
-export type ProductFilter = {
+export type CategoryStat = {
   label: string;
   value: string;
-};
-
-export type VisualizationAction = {
-  label: string;
-  variant: "primary" | "secondary" | "outline" | "ghost";
+  description: string;
+  tone: "brand" | "success" | "warning" | "info";
 };
 
 export type VisualizationSpec = {
-  kind: VisualizationKind;
   title: string;
   subtitle: string;
-  intent: string;
-  stats: VisualizationStat[];
-  actions: VisualizationAction[];
-  filters: ProductFilter[];
-  products: AdminProduct[];
+  stats: CategoryStat[];
+  categories: Category[];
+  parentOptions: Array<{ id: number | null; name: string }>;
+  formDefaults: {
+    name: string;
+    description: string;
+    image: string;
+    parentId: number | null;
+  };
 };
 
 export const currentVisualizationSpec: VisualizationSpec = {
-  kind: "admin-products",
-  title: "Products Management",
-  subtitle:
-    "A professional admin surface for listing products, adding new inventory, editing catalog details, and importing product data from CSV or Excel.",
-  intent:
-    "Give admins a fast, scannable workspace to manage the ecommerce catalog with clear inventory status and high-confidence actions.",
+  title: "Categories",
+  subtitle: "Manage product categories and hierarchy",
   stats: [
     {
-      label: "Total products",
-      value: "1,284",
-      detail: "Across 18 categories",
+      label: "Total categories",
+      value: "24",
+      description: "Flat table view",
       tone: "brand",
     },
     {
-      label: "Active listings",
-      value: "1,108",
-      detail: "86% of catalog live",
+      label: "Root categories",
+      value: "8",
+      description: "Top-level catalog groups",
       tone: "success",
     },
     {
-      label: "Low stock",
-      value: "42",
-      detail: "Needs replenishment",
+      label: "Child categories",
+      value: "16",
+      description: "Linked to parent category",
+      tone: "info",
+    },
+    {
+      label: "Empty categories",
+      value: "3",
+      description: "No products assigned",
       tone: "warning",
     },
-    {
-      label: "Draft updates",
-      value: "17",
-      detail: "Waiting for review",
-      tone: "accent",
-    },
   ],
-  actions: [
-    { label: "Add product", variant: "primary" },
-    { label: "Import CSV / Excel", variant: "outline" },
+  parentOptions: [
+    { id: null, name: "No parent category" },
+    { id: 1, name: "Electronics" },
+    { id: 2, name: "Fashion" },
+    { id: 3, name: "Home & Kitchen" },
+    { id: 4, name: "Beauty" },
   ],
-  filters: [
-    { label: "All products", value: "1,284" },
-    { label: "Active", value: "1,108" },
-    { label: "Draft", value: "93" },
-    { label: "Low stock", value: "42" },
-    { label: "Archived", value: "41" },
-  ],
-  products: [
+  formDefaults: {
+    name: "Gaming Accessories",
+    description: "Controllers, keyboards, headsets, and gaming setup essentials.",
+    image: "https://images.example.com/categories/gaming-accessories.jpg",
+    parentId: 1,
+  },
+  categories: [
     {
-      id: "PRD-1048",
-      name: "Galaxy M Power 5G",
-      category: "Mobiles",
-      sku: "MOB-GMP-128-BLK",
-      price: "$219.00",
-      stock: 128,
-      status: "Active",
-      updatedAt: "Today, 10:42 AM",
+      id: 1,
+      name: "Electronics",
+      description: "Mobiles, audio, accessories, and smart devices.",
+      image: "https://images.example.com/categories/electronics.jpg",
+      parentId: null,
+      parent: null,
+      productsCount: 342,
+      createdAt: "2026-05-14T10:20:00.000Z",
+      updatedAt: "2026-06-08T09:10:00.000Z",
     },
     {
-      id: "PRD-0982",
-      name: "NoiseLite Headphones",
-      category: "Electronics",
-      sku: "AUD-NLH-ANC-GRY",
-      price: "$89.00",
-      stock: 18,
-      status: "Low stock",
-      updatedAt: "Today, 9:15 AM",
+      id: 5,
+      name: "Headphones",
+      description: "Wireless, wired, noise cancelling, and studio headphones.",
+      image: "https://images.example.com/categories/headphones.jpg",
+      parentId: 1,
+      parent: { id: 1, name: "Electronics" },
+      productsCount: 86,
+      createdAt: "2026-05-18T14:45:00.000Z",
+      updatedAt: "2026-06-07T17:32:00.000Z",
     },
     {
-      id: "PRD-1120",
-      name: "UrbanRun Sneakers",
-      category: "Fashion",
-      sku: "FSH-URS-42-WHT",
-      price: "$64.00",
-      stock: 246,
-      status: "Active",
-      updatedAt: "Yesterday, 6:20 PM",
+      id: 2,
+      name: "Fashion",
+      description: "Clothing, footwear, watches, and everyday accessories.",
+      parentId: null,
+      parent: null,
+      productsCount: 418,
+      createdAt: "2026-05-12T08:05:00.000Z",
+      updatedAt: "2026-06-04T13:26:00.000Z",
     },
     {
-      id: "PRD-1177",
-      name: "SmartChef Air Fryer",
-      category: "Home Appliances",
-      sku: "HOM-SAF-6L-BLK",
-      price: "$129.00",
-      stock: 7,
-      status: "Low stock",
-      updatedAt: "Yesterday, 4:05 PM",
+      id: 9,
+      name: "Men's Sneakers",
+      description: "Running shoes, casual sneakers, and streetwear drops.",
+      image: "https://images.example.com/categories/sneakers.jpg",
+      parentId: 2,
+      parent: { id: 2, name: "Fashion" },
+      productsCount: 112,
+      createdAt: "2026-05-21T11:30:00.000Z",
+      updatedAt: "2026-06-03T15:40:00.000Z",
     },
     {
-      id: "PRD-1214",
-      name: "GlowCare Starter Kit",
-      category: "Beauty",
-      sku: "BTY-GCK-SET-01",
-      price: "$34.00",
-      stock: 0,
-      status: "Draft",
-      updatedAt: "Jun 7, 2:18 PM",
+      id: 3,
+      name: "Home & Kitchen",
+      description: "Appliances, storage, cookware, and home improvement.",
+      image: "https://images.example.com/categories/home.jpg",
+      parentId: null,
+      parent: null,
+      productsCount: 251,
+      createdAt: "2026-05-09T09:15:00.000Z",
+      updatedAt: "2026-06-01T12:12:00.000Z",
     },
     {
-      id: "PRD-0871",
-      name: "Everyday Backpack",
-      category: "Accessories",
-      sku: "ACC-EDB-24L-NVY",
-      price: "$42.00",
-      stock: 312,
-      status: "Active",
-      updatedAt: "Jun 6, 11:30 AM",
+      id: 14,
+      name: "Air Fryers",
+      description: "Compact, family-size, and smart cooking appliances.",
+      parentId: 3,
+      parent: { id: 3, name: "Home & Kitchen" },
+      productsCount: 0,
+      createdAt: "2026-05-25T16:05:00.000Z",
+      updatedAt: "2026-05-28T10:01:00.000Z",
     },
   ],
 };
