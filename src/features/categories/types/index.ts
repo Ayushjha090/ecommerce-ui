@@ -3,7 +3,7 @@ export type Category = {
     name?: string
     description?: string | null
     imageKey?: string | null
-    imageURL?: string | null
+    imageUrl?: string | null
     parentId?: number
     createdAt?: string
     updatedAt?: string
