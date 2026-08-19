@@ -81,6 +81,10 @@
     font-family: var(--font-sans);
   }
 
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
   html.dark,
   .dark body,
   .dark #root {

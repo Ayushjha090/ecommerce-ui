@@ -207,7 +207,7 @@ export default function AddCategoryDialog({
           <button
             type="button"
             onClick={handleClose}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-100 hover:text-surface-950 dark:text-surface-400 dark:hover:bg-surface-900 dark:hover:text-surface-50"
+            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-100 hover:text-surface-950 dark:text-surface-400 dark:hover:bg-surface-900 dark:hover:text-surface-50"
             aria-label="Close category dialog"
           >
             <X className="h-5 w-5" />
@@ -331,7 +331,7 @@ export default function AddCategoryDialog({
                 {statusOptions.map((option) => (
                   <label
                     key={option.value}
-                    className="has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700 rounded-md border-2 border-surface-300 p-3 text-surface-700 transition-colors dark:border-surface-600 dark:text-surface-200 dark:has-[:checked]:bg-brand-500/10 dark:has-[:checked]:text-brand-200"
+                    className="has-checked:border-brand-500 has-checked:bg-brand-50 has-checked:text-brand-700 cursor-pointer rounded-md border-2 border-surface-300 p-3 text-surface-700 transition-colors dark:border-surface-600 dark:text-surface-200 dark:has-checked:bg-brand-500/10 dark:has-checked:text-brand-200"
                   >
                     <input
                       type="radio"
