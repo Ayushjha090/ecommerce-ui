@@ -190,7 +190,7 @@ function DataTableRowActions<TData>({
                 onOpenChange(false);
               }}
               className={cn(
-                "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
+                "flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
                 action.variant === "danger"
                   ? "text-error-600 hover:bg-error-50 dark:text-error-500 dark:hover:bg-error-500/10"
                   : "text-surface-700 hover:bg-surface-100 dark:text-surface-200 dark:hover:bg-surface-800/70",

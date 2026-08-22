@@ -1,6 +1,6 @@
-import { type FC, useMemo } from "react";
+import { type FC, useMemo, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Boxes,
   Download,
@@ -19,9 +19,14 @@ import { DataTable, type DataTableColumn } from "@/components/ui/DataTable";
 import AdminPageHeader from "@/layouts/admin/AdminPageHeader";
 import { cn } from "@/utils/cn";
 
-import { getCategories, getCategoryStats } from "../api/categories.api";
+import {
+  deleteCategory,
+  getCategories,
+  getCategoryStats,
+} from "../api/categories.api";
 import { categoriesKey } from "../api/categories.key";
-import type { Category } from "../types";
+import type { Category, CategoryStatus } from "../types";
+import AddCategoryDialog from "./AddCategoryDialog";
 
 const formatCategoryNumber = (value?: number) =>
   new Intl.NumberFormat("en-IN").format(value ?? 0);
@@ -43,7 +48,26 @@ const statToneClasses: Record<CategoryStatCard["tone"], string> = {
     "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-warning-500",
 };
 
+const statusBadgeClasses: Record<CategoryStatus, string> = {
+  ACTIVE:
+    "bg-success-50 text-success-600 ring-success-500/15 dark:bg-success-500/15 dark:text-success-500 dark:ring-success-500/20",
+  DRAFT:
+    "bg-warning-50 text-warning-600 ring-warning-500/15 dark:bg-warning-500/15 dark:text-warning-500 dark:ring-warning-500/20",
+  INACTIVE:
+    "bg-surface-100 text-surface-600 ring-surface-300 dark:bg-surface-900 dark:text-surface-300 dark:ring-surface-700",
+};
+
+const statusLabel: Record<CategoryStatus, string> = {
+  ACTIVE: "Active",
+  DRAFT: "Draft",
+  INACTIVE: "Inactive",
+};
+
 const CategoriesDashboard: FC = () => {
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const categoriesQuery = useQuery({
     queryKey: categoriesKey.list(),
     queryFn: getCategories,
@@ -55,13 +79,51 @@ const CategoriesDashboard: FC = () => {
   });
 
   const categories = categoriesQuery.data ?? [];
+  const deleteCategoryMutation = useMutation({
+    mutationFn: deleteCategory,
+    onSuccess: async () => {
+      setDeleteError(null);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: categoriesKey.lists() }),
+        queryClient.invalidateQueries({ queryKey: categoriesKey.stats() }),
+      ]);
+    },
+    onError: (error) => {
+      setDeleteError(
+        error instanceof Error
+          ? error.message
+          : "Unable to delete category. Please try again.",
+      );
+    },
+  });
+
+  const openAddDialog = () => {
+    setCategoryToEdit(null);
+    setIsAddDialogOpen(true);
+  };
+
+  const openEditDialog = (category: Category) => {
+    setCategoryToEdit(category);
+    setIsAddDialogOpen(true);
+  };
+
+  const handleDeleteCategory = (category: Category) => {
+    if (!category.id) return;
+
+    const confirmed = window.confirm(
+      `Delete category "${category.name ?? "Untitled category"}"?`,
+    );
+    if (!confirmed) return;
+
+    deleteCategoryMutation.mutate(category.id);
+  };
 
   const stats = useMemo<CategoryStatCard[]>(
     () => [
       {
         label: "Total Categories",
         value: categoryStatsQuery.data?.total,
-        description: "All active catalog groups",
+        description: "All catalog groups",
         icon: FolderTree,
         tone: "brand",
       },
@@ -102,7 +164,7 @@ const CategoriesDashboard: FC = () => {
         cell: (category) => (
           <div className="flex min-w-64 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-surface-100 text-xs font-semibold text-surface-500 dark:bg-surface-800 dark:text-surface-400">
-              {category.imageKey && category.imageUrl ? (
+              {category.imageUrl ? (
                 <img
                   src={category.imageUrl}
                   alt={category.name ?? "Category"}
@@ -125,6 +187,27 @@ const CategoriesDashboard: FC = () => {
             </div>
           </div>
         ),
+      },
+      {
+        id: "status",
+        header: "Status",
+        searchValue: (category) => category.status ?? "",
+        className: "w-36",
+        headerClassName: "w-36",
+        cell: (category) => {
+          const status = category.status ?? "DRAFT";
+
+          return (
+            <span
+              className={cn(
+                "inline-flex h-8 min-w-20 items-center justify-center rounded-md px-3 text-xs font-semibold ring-1",
+                statusBadgeClasses[status],
+              )}
+            >
+              {statusLabel[status]}
+            </span>
+          );
+        },
       },
       {
         id: "parent",
@@ -188,6 +271,9 @@ const CategoriesDashboard: FC = () => {
       {(categoriesQuery.isError || categoryStatsQuery.isError) && (
         <p className="text-sm text-error-500">Failed to load categories.</p>
       )}
+      {deleteError ? (
+        <p className="text-sm text-error-500">{deleteError}</p>
+      ) : null}
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((stat) => (
@@ -227,7 +313,7 @@ const CategoriesDashboard: FC = () => {
       <DataTable
         data={categories}
         columns={columns}
-        getRowId={(category) => category.id ?? category.imageKey ?? category.name ?? ""}
+        getRowId={(category) => category.id ?? category.name ?? ""}
         isLoading={categoriesQuery.isLoading}
         emptyMessage="No categories found."
         enableGlobalSearch
@@ -243,7 +329,10 @@ const CategoriesDashboard: FC = () => {
             >
               Export
             </Button>
-            <Button leftIcon={<Plus className="h-4 w-4" />}>
+            <Button
+              leftIcon={<Plus className="h-4 w-4" />}
+              onClick={openAddDialog}
+            >
               Add Category
             </Button>
           </>
@@ -254,7 +343,7 @@ const CategoriesDashboard: FC = () => {
             label: "Edit category",
             icon: <Pencil className="h-4 w-4" />,
             onClick: () => {
-              console.log("Edit category", category.id);
+              openEditDialog(category);
             },
           },
           {
@@ -263,10 +352,20 @@ const CategoriesDashboard: FC = () => {
             icon: <Trash2 className="h-4 w-4" />,
             variant: "danger",
             onClick: () => {
-              console.log("Delete category", category.id);
+              handleDeleteCategory(category);
             },
           },
         ]}
+      />
+
+      <AddCategoryDialog
+        isOpen={isAddDialogOpen}
+        categories={categories}
+        category={categoryToEdit}
+        onClose={() => {
+          setIsAddDialogOpen(false);
+          setCategoryToEdit(null);
+        }}
       />
     </div>
   );

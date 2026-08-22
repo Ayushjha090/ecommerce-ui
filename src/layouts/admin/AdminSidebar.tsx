@@ -184,7 +184,7 @@ export default function AdminSidebar({
             <button
               type="button"
               onClick={handleLogout}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-200 hover:text-error-600 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-error-500"
+              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-200 hover:text-error-600 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-error-500"
               aria-label="Logout"
               title="Logout"
             >
@@ -194,7 +194,7 @@ export default function AdminSidebar({
             <button
               type="button"
               onClick={handleLogout}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-200 hover:text-error-600 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-error-500"
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-surface-500 transition-colors hover:bg-surface-200 hover:text-error-600 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-error-500"
               aria-label="Logout"
             >
               <LogOut className="h-4 w-4" />

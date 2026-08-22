@@ -13,7 +13,7 @@ export default function AdminLayout() {
         {isMobileSidebarOpen && (
           <button
             type="button"
-            className="fixed inset-0 z-30 animate-[adminBackdropFade_180ms_ease-out] bg-surface-900/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-30 animate-[adminBackdropFade_180ms_ease-out] cursor-pointer bg-surface-900/60 backdrop-blur-sm lg:hidden"
             aria-label="Close admin navigation"
             onClick={() => setIsMobileSidebarOpen(false)}
           />

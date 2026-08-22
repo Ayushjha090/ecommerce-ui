@@ -91,7 +91,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
         <button
           type="button"
           onClick={onOpenSidebar}
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-surface-700 hover:bg-surface-100 dark:text-surface-200 dark:hover:bg-surface-900 lg:hidden"
+          className="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-surface-700 hover:bg-surface-100 dark:text-surface-200 dark:hover:bg-surface-900 lg:hidden"
           aria-label="Open admin navigation"
         >
           <Menu className="h-5 w-5" />
@@ -115,7 +115,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
         <button
           type="button"
           onClick={toggleTheme}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-surface-600 transition-colors hover:bg-surface-100 hover:text-surface-950 dark:text-surface-300 dark:hover:bg-surface-900 dark:hover:text-surface-50"
+          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-surface-600 transition-colors hover:bg-surface-100 hover:text-surface-950 dark:text-surface-300 dark:hover:bg-surface-900 dark:hover:text-surface-50"
           aria-label={
             isDarkMode ? "Switch to light mode" : "Switch to dark mode"
           }
@@ -142,7 +142,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
         <button
           type="button"
           onClick={() => setIsProfileOpen((current) => !current)}
-          className="inline-flex min-w-0 items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-surface-100 dark:hover:bg-surface-900"
+          className="inline-flex min-w-0 cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-surface-100 dark:hover:bg-surface-900"
           aria-label="Admin profile"
           aria-expanded={isProfileOpen}
         >
@@ -194,7 +194,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
                   key={item.label}
                   type="button"
                   onClick={item.onClick}
-                  className="flex w-full items-center gap-4 rounded-md text-left transition-colors hover:bg-surface-100 dark:hover:bg-surface-800"
+                  className="flex w-full cursor-pointer items-center gap-4 rounded-md text-left transition-colors hover:bg-surface-100 dark:hover:bg-surface-800"
                 >
                   <span
                     className={[
@@ -220,7 +220,7 @@ export default function AdminTopbar({ onOpenSidebar }: AdminTopbarProps) {
             <button
               type="button"
               onClick={handleLogout}
-              className="flex h-11 w-full items-center justify-center rounded-full bg-info-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-info-600"
+              className="flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-info-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-info-600"
             >
               <LogOut className="mr-2 h-4 w-4" />
               Logout
